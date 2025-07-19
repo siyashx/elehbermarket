@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -24,6 +25,14 @@ public class Order {
     private String address;
 
     private String status;
+
+    private Long customerId;
+    private Long courierId;
+
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "order_products", joinColumns = @JoinColumn(name = "order_id"))
+    private List<ProductItem> products;
+
 
     private Double price;
 

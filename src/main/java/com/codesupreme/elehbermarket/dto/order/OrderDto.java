@@ -3,6 +3,7 @@ package com.codesupreme.elehbermarket.dto.order;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +12,9 @@ import java.util.Date;
 @Builder
 public class OrderDto {
     private Long id;
+    private Long customerId;
+    private Long courierId;
+    private List<ProductItemDto> products;
     private String date;
     private String address;
     private String status;

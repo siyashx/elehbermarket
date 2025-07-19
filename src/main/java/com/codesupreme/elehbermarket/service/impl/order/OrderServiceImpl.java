@@ -1,8 +1,13 @@
 package com.codesupreme.elehbermarket.service.impl.order;
 
 import com.codesupreme.elehbermarket.dao.order.OrderRepository;
+import com.codesupreme.elehbermarket.dao.product.ProductRepository;
 import com.codesupreme.elehbermarket.dto.order.OrderDto;
+import com.codesupreme.elehbermarket.dto.order.ProductItemDto;
+import com.codesupreme.elehbermarket.dto.product.ProductDto;
 import com.codesupreme.elehbermarket.model.order.Order;
+import com.codesupreme.elehbermarket.model.order.ProductItem;
+import com.codesupreme.elehbermarket.model.product.Product;
 import com.codesupreme.elehbermarket.service.inter.order.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,10 +20,19 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     private OrderDto toDto(Order order) {
+        List<ProductItemDto> productItemDtos = order.getProducts().stream().map(item -> {
+            ProductDto productDto = getProductDtoById(item.getProductId());
+            return new ProductItemDto(productDto, item.getQuantity());
+        }).collect(Collectors.toList());
+
         return OrderDto.builder()
                 .id(order.getId())
+                .customerId(order.getCustomerId())
+                .courierId(order.getCourierId())
+                .products(productItemDtos)
                 .date(order.getDate())
                 .address(order.getAddress())
                 .status(order.getStatus())
@@ -30,8 +44,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Order toEntity(OrderDto dto) {
+        List<ProductItem> items = dto.getProducts().stream().map(itemDto ->
+                ProductItem.builder()
+                        .productId(itemDto.getProduct().getId())
+                        .quantity(itemDto.getQuantity())
+                        .build()
+        ).collect(Collectors.toList());
+
         return Order.builder()
                 .id(dto.getId())
+                .customerId(dto.getCustomerId())
+                .courierId(dto.getCourierId())
+                .products(items)
                 .date(dto.getDate())
                 .address(dto.getAddress())
                 .status(dto.getStatus())
@@ -39,6 +63,19 @@ public class OrderServiceImpl implements OrderService {
                 .description(dto.getDescription())
                 .isDisable(dto.getIsDisable())
                 .build();
+    }
+
+    private ProductDto getProductDtoById(Long id) {
+        return productRepository.findById(id)
+                .map(product -> ProductDto.builder()
+                        .id(product.getId())
+                        .name(product.getName())
+                        .price(product.getPrice())
+                        .unit(product.getUnit())
+                        .imageUrl(product.getImageUrl())
+                        .category(product.getCategory())
+                        .build())
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
     @Override
