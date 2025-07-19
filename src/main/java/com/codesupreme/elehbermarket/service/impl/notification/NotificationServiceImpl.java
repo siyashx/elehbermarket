@@ -19,6 +19,8 @@ public class NotificationServiceImpl implements NotificationService {
     private NotificationDto toDto(Notification n) {
         return NotificationDto.builder()
                 .id(n.getId())
+                .customerId(n.getCustomerId())
+                .courierId(n.getCourierId())
                 .title(n.getTitle())
                 .message(n.getMessage())
                 .date(n.getDate())
@@ -28,6 +30,8 @@ public class NotificationServiceImpl implements NotificationService {
     private Notification toEntity(NotificationDto dto) {
         return Notification.builder()
                 .id(dto.getId())
+                .customerId(dto.getCustomerId())
+                .courierId(dto.getCourierId())
                 .title(dto.getTitle())
                 .message(dto.getMessage())
                 .date(dto.getDate())
