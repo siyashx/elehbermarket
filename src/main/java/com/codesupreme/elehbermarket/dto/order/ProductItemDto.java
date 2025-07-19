@@ -8,7 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class ProductItemDto {
-    private ProductDto product;
+    private Long productId;        // frontend bu sahəni göndərəcək
     private Integer quantity;
+
+    private ProductDto product;    // toDto üçün backend dolduracaq
 }
 

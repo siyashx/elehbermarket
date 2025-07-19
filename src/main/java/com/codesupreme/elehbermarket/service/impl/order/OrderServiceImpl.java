@@ -25,7 +25,11 @@ public class OrderServiceImpl implements OrderService {
     private OrderDto toDto(Order order) {
         List<ProductItemDto> productItemDtos = order.getProducts().stream().map(item -> {
             ProductDto productDto = getProductDtoById(item.getProductId());
-            return new ProductItemDto(productDto, item.getQuantity());
+            return ProductItemDto.builder()
+                    .productId(item.getProductId())
+                    .quantity(item.getQuantity())
+                    .product(productDto)
+                    .build();
         }).collect(Collectors.toList());
 
         return OrderDto.builder()
@@ -43,10 +47,11 @@ public class OrderServiceImpl implements OrderService {
                 .build();
     }
 
+
     private Order toEntity(OrderDto dto) {
         List<ProductItem> items = dto.getProducts().stream().map(itemDto ->
                 ProductItem.builder()
-                        .productId(itemDto.getProduct().getId())
+                        .productId(itemDto.getProductId()) // buradan gəlir artıq
                         .quantity(itemDto.getQuantity())
                         .build()
         ).collect(Collectors.toList());
@@ -64,6 +69,7 @@ public class OrderServiceImpl implements OrderService {
                 .isDisable(dto.getIsDisable())
                 .build();
     }
+
 
     private ProductDto getProductDtoById(Long id) {
         return productRepository.findById(id)
