@@ -27,6 +27,8 @@ public class Courier {
 
     private String password;
 
+    private Boolean isRequest;
+
     private Boolean isDisable;
 
     @CreationTimestamp

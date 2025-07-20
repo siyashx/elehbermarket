@@ -23,6 +23,7 @@ public class CourierServiceImpl implements CourierService {
                 .phone(courier.getPhone())
                 .imageUrl(courier.getImageUrl())
                 .password(courier.getPassword())
+                .isRequest(courier.getIsRequest())
                 .isDisable(courier.getIsDisable())
                 .createdAt(courier.getCreatedAt())
                 .build();
@@ -35,6 +36,7 @@ public class CourierServiceImpl implements CourierService {
                 .phone(dto.getPhone())
                 .imageUrl(dto.getImageUrl())
                 .password(dto.getPassword())
+                .isRequest(dto.getIsRequest())
                 .isDisable(dto.getIsDisable())
                 .build();
     }
@@ -69,6 +71,7 @@ public class CourierServiceImpl implements CourierService {
             courier.setPhone(dto.getPhone());
             courier.setImageUrl(dto.getImageUrl());
             courier.setPassword(dto.getPassword());
+            courier.setIsRequest(dto.getIsRequest());
             courier.setIsDisable(dto.getIsDisable());
             return toDto(courierRepository.save(courier));
         }).orElse(null);

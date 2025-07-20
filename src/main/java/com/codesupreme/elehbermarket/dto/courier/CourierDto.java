@@ -15,6 +15,7 @@ public class CourierDto {
     private String phone;
     private String imageUrl;
     private String password;
+    private Boolean isRequest;
     private Boolean isDisable;
     private Date createdAt;
 }
