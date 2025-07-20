@@ -102,6 +102,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDto updateOrder(Long id, OrderDto dto) {
         return orderRepository.findById(id).map(order -> {
+            order.setCustomerId(dto.getCustomerId());
+            order.setCourierId(dto.getCourierId());
             order.setDate(dto.getDate());
             order.setAddress(dto.getAddress());
             order.setStatus(dto.getStatus());
