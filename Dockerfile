@@ -1,4 +1,4 @@
-FROM openjdk:17-jdk
+FROM eclipse-temurin:17-jdk
 
 # HTTPS için .p12 dosyasını container içine kopyala
 COPY keystore.p12 /etc/ssl/private/keystore.p12
